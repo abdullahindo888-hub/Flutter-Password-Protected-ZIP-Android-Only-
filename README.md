@@ -14,7 +14,7 @@ This snippet shows how to create a password-protected ZIP file in Flutter
 
 /// --------------------------- 1️⃣ Dart API ---------------------------
 
-{
+
     
     import 'package:flutter/services.dart';
 
@@ -39,14 +39,14 @@ This snippet shows how to create a password-protected ZIP file in Flutter
         }
       }
     }
-}
+
 
 
 /// --------------------------- 2️⃣ Android Kotlin Implementation ---------------------------
 // Place this in android/src/main/kotlin/com/example/password_zip/PasswordZipPlugin.kt
 /*
 
-{
+
 
     package com.example.myApp
     import io.flutter.embedding.android.FlutterActivity
@@ -106,19 +106,19 @@ This snippet shows how to create a password-protected ZIP file in Flutter
         }
     }
 
-}
+
 */
 
 /// --------------------------- 3️⃣ Android Permissions ---------------------------
 /*
 Add these permissions to AndroidManifest.xml for android 11+:
-{
+
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
 
-}
+
 
 
 Request runtime permissions on Android 10+ using permission_handler.
@@ -127,17 +127,17 @@ Request runtime permissions on Android 10+ using permission_handler.
 
 /// --------------------------- 4️⃣ Add Depedencies ---------------------------
 
-{
+
  
     dependencies {
         implementation("net.lingala.zip4j:zip4j:2.11.5")
     }
 
-}
+
 */
 
 /// --------------------------- 4️⃣ Example Usage ---------------------------
-{
+
 
     void main() async {
       final success = await EnoughZip.createEncryptedZip(
@@ -156,12 +156,12 @@ Request runtime permissions on Android 10+ using permission_handler.
       }
     }
     
-}
+
 
 
 /// --------------------------- 5️⃣ Fresh Build ---------------------------
 
-{
+
 
     flutter clean
     rm -rf android/.gradle
@@ -169,7 +169,7 @@ Request runtime permissions on Android 10+ using permission_handler.
     flutter pub get
     flutter run
     
-}
+
 
 
 /// --------------------------- 5️⃣ Notes ---------------------------
