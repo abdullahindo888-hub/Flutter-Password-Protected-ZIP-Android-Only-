@@ -1,6 +1,6 @@
 /*
 ================================================================================
-🔥 Flutter Password-Protected ZIP Plugin (Android Only)
+🔥 Flutter Password-Protected ZIP Plugin/ Enough Zip Encryption (Android Only)
 ================================================================================
 This snippet shows how to create a password-protected ZIP file in Flutter 
 (Android only) using Zip4j AES encryption. It includes:
