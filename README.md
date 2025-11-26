@@ -1,6 +1,6 @@
 /*
 ================================================================================
-🔥 Flutter Password-Protected ZIP Plugin/ Enough Zip Encryption (Android Only)
+🔥 Flutter Password-Protected ZIP Plugin (Android Only)
 ================================================================================
 This snippet shows how to create a password-protected ZIP file in Flutter 
 (Android only) using Zip4j AES encryption. It includes:
@@ -13,102 +13,111 @@ This snippet shows how to create a password-protected ZIP file in Flutter
 */
 
 /// --------------------------- 1️⃣ Dart API ---------------------------
-import 'package:flutter/services.dart';
 
-class EnoughZip {
-  static const MethodChannel _channel = MethodChannel("myApp/encrypted_zip");
+{
+    import 'package:flutter/services.dart';
 
-  static Future<bool> createEncryptedZip({
-    required List<String> files,
-    required String outputPath,
-    required String password,
-  }) async {
-    try {
-      final result = await _channel.invokeMethod("createZip", {
-        "files": files,
-        "outputPath": outputPath,
-        "password": password,
-      });
-      return result == true;
-    } catch (e) {
-      print("ZIP ERROR: $e");
-      return false;
+    class EnoughZip {
+      static const MethodChannel _channel = MethodChannel("myApp/encrypted_zip");
+
+      static Future<bool> createEncryptedZip({
+        required List<String> files,
+        required String outputPath,
+        required String password,
+      }) async {
+        try {
+          final result = await _channel.invokeMethod("createZip", {
+            "files": files,
+            "outputPath": outputPath,
+            "password": password,
+          });
+          return result == true;
+        } catch (e) {
+          print("ZIP ERROR: $e");
+          return false;
+        }
+      }
     }
-  }
 }
 
 
 /// --------------------------- 2️⃣ Android Kotlin Implementation ---------------------------
 // Place this in android/src/main/kotlin/com/example/password_zip/PasswordZipPlugin.kt
 /*
-package com.example.myApp
 
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
-import net.lingala.zip4j.ZipFile
-import net.lingala.zip4j.model.ZipParameters
-import net.lingala.zip4j.model.enums.CompressionLevel
-import net.lingala.zip4j.model.enums.EncryptionMethod
-import java.io.File
+{
 
-class MainActivity : FlutterActivity() {
+    package com.example.myApp
 
-    private val CHANNEL = "myApp/encrypted_zip"
+    import io.flutter.embedding.android.FlutterActivity
+    import io.flutter.embedding.engine.FlutterEngine
+    import io.flutter.plugin.common.MethodChannel
+    import net.lingala.zip4j.ZipFile
+    import net.lingala.zip4j.model.ZipParameters
+    import net.lingala.zip4j.model.enums.CompressionLevel
+    import net.lingala.zip4j.model.enums.EncryptionMethod
+    import java.io.File
 
-    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        super.configureFlutterEngine(flutterEngine)
+    class MainActivity : FlutterActivity() {
 
-        MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            CHANNEL
-        ).setMethodCallHandler { call, result ->
-            when (call.method) {
+        private val CHANNEL = "myApp/encrypted_zip"
 
-                "createZip" -> {
-                    val files = call.argument<List<String>>("files") ?: emptyList()
-                    val output = call.argument<String>("outputPath")!!
-                    val password = call.argument<String>("password")!!
+        override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+            super.configureFlutterEngine(flutterEngine)
 
-                    try {
+            MethodChannel(
+                flutterEngine.dartExecutor.binaryMessenger,
+                CHANNEL
+            ).setMethodCallHandler { call, result ->
+                when (call.method) {
 
-                        // Prepare ZIP file with password
-                        val zipFile = ZipFile(output, password.toCharArray())
+                    "createZip" -> {
+                        val files = call.argument<List<String>>("files") ?: emptyList()
+                        val output = call.argument<String>("outputPath")!!
+                        val password = call.argument<String>("password")!!
 
-                        // Setup ZIP parameters
-                        val params = ZipParameters().apply {
-                            isEncryptFiles = true
-                            compressionLevel = CompressionLevel.HIGHER
-                            encryptionMethod = EncryptionMethod.ZIP_STANDARD
+                        try {
+
+                            // Prepare ZIP file with password
+                            val zipFile = ZipFile(output, password.toCharArray())
+
+                            // Setup ZIP parameters
+                            val params = ZipParameters().apply {
+                                isEncryptFiles = true
+                                compressionLevel = CompressionLevel.HIGHER
+                                encryptionMethod = EncryptionMethod.ZIP_STANDARD
+                            }
+
+                            // Add each file
+                            files.forEach { filePath ->
+                                zipFile.addFile(File(filePath), params)
+                            }
+
+                            result.success(true)
+
+                        } catch (e: Exception) {
+                            result.error("ZIP_ERROR", e.message, null)
                         }
-
-                        // Add each file
-                        files.forEach { filePath ->
-                            zipFile.addFile(File(filePath), params)
-                        }
-
-                        result.success(true)
-
-                    } catch (e: Exception) {
-                        result.error("ZIP_ERROR", e.message, null)
                     }
-                }
 
-                else -> result.notImplemented()
+                    else -> result.notImplemented()
+                }
             }
         }
     }
-}
 
+}
 */
 
 /// --------------------------- 3️⃣ Android Permissions ---------------------------
 /*
-Add these permissions to AndroidManifest.xml:
+Add these permissions to AndroidManifest.xml for android 11+:
+{
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
+}
 
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-<uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
 
 Request runtime permissions on Android 10+ using permission_handler.
 
@@ -116,39 +125,45 @@ Request runtime permissions on Android 10+ using permission_handler.
 
 /// --------------------------- 4️⃣ Add Depedencies ---------------------------
 
-dependencies {
+{
+    dependencies {
     implementation("net.lingala.zip4j:zip4j:2.11.5")
 }
 
 
+}
 */
 
 /// --------------------------- 4️⃣ Example Usage ---------------------------
-void main() async {
-  final success = await EnoughZip.createEncryptedZip(
-    files: [
-      "/storage/emulated/0/myApp/logs/log1.txt",
-      "/storage/emulated/0/myApp/logs/log2.txt",
-    ],
-    outputPath: "/storage/emulated/0/Download/myApp_backup.zip",
-    password: "MyStrongPassword123",
-  );
+{
+    void main() async {
+      final success = await EnoughZip.createEncryptedZip(
+        files: [
+          "/storage/emulated/0/myApp/logs/log1.txt",
+          "/storage/emulated/0/myApp/logs/log2.txt",
+        ],
+        outputPath: "/storage/emulated/0/Download/myApp_backup.zip",
+        password: "MyStrongPassword123",
+      );
 
-  if (success) {
-    print("✅ ZIP created successfully with password!");
-  } else {
-    print("❌ ZIP creation failed. Check files, output path, or permissions.");
-  }
+      if (success) {
+        print("✅ ZIP created successfully with password!");
+      } else {
+        print("❌ ZIP creation failed. Check files, output path, or permissions.");
+      }
+    }
 }
 
 
 /// --------------------------- 5️⃣ Fresh Build ---------------------------
 
-flutter clean
-rm -rf android/.gradle
-rm -rf android/app/build
-flutter pub get
-flutter run
+{
+    flutter clean
+    rm -rf android/.gradle
+    rm -rf android/app/build
+    flutter pub get
+    flutter run
+}
 
 
 /// --------------------------- 5️⃣ Notes ---------------------------
