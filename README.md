@@ -15,6 +15,7 @@ This snippet shows how to create a password-protected ZIP file in Flutter
 /// --------------------------- 1️⃣ Dart API ---------------------------
 
 {
+    
     import 'package:flutter/services.dart';
 
     class EnoughZip {
@@ -48,7 +49,6 @@ This snippet shows how to create a password-protected ZIP file in Flutter
 {
 
     package com.example.myApp
-
     import io.flutter.embedding.android.FlutterActivity
     import io.flutter.embedding.engine.FlutterEngine
     import io.flutter.plugin.common.MethodChannel
@@ -113,9 +113,11 @@ This snippet shows how to create a password-protected ZIP file in Flutter
 /*
 Add these permissions to AndroidManifest.xml for android 11+:
 {
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage"/>
+
 }
 
 
@@ -126,16 +128,17 @@ Request runtime permissions on Android 10+ using permission_handler.
 /// --------------------------- 4️⃣ Add Depedencies ---------------------------
 
 {
+ 
     dependencies {
-    implementation("net.lingala.zip4j:zip4j:2.11.5")
-}
-
+        implementation("net.lingala.zip4j:zip4j:2.11.5")
+    }
 
 }
 */
 
 /// --------------------------- 4️⃣ Example Usage ---------------------------
 {
+
     void main() async {
       final success = await EnoughZip.createEncryptedZip(
         files: [
@@ -152,17 +155,20 @@ Request runtime permissions on Android 10+ using permission_handler.
         print("❌ ZIP creation failed. Check files, output path, or permissions.");
       }
     }
+    
 }
 
 
 /// --------------------------- 5️⃣ Fresh Build ---------------------------
 
 {
+
     flutter clean
     rm -rf android/.gradle
     rm -rf android/app/build
     flutter pub get
     flutter run
+    
 }
 
 
